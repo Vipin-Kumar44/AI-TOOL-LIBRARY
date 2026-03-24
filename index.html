@@ -46,6 +46,58 @@
       cursor: pointer;
     }
     
+    .search-container {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 20px;
+    }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      padding: 8px 16px;
+      transition: all 0.3s;
+    }
+    
+    .search-box:focus-within {
+      border-color: #3B82F6;
+      background: rgba(59,130,246,0.1);
+    }
+    
+    .search-box i {
+      color: #64748B;
+      margin-right: 12px;
+    }
+    
+    .search-box input {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+    }
+    
+    .search-box input::placeholder {
+      color: #64748B;
+    }
+    
+    .clear-search {
+      background: none;
+      border: none;
+      color: #64748B;
+      cursor: pointer;
+      padding: 4px;
+      display: none;
+    }
+    
+    .clear-search:hover {
+      color: #EF4444;
+    }
+    
     .nav-controls {
       display: flex;
       gap: 12px;
@@ -341,8 +393,8 @@
       font-size: 13px;
     }
     
-    /* Excel Upload Section */
-    .excel-upload {
+    /* Upload Section */
+    .upload-section {
       background: #131929;
       border: 2px dashed rgba(59,130,246,0.3);
       border-radius: 20px;
@@ -351,12 +403,12 @@
       margin-bottom: 40px;
     }
     
-    .excel-upload h3 {
+    .upload-section h3 {
       margin-bottom: 16px;
       color: #3B82F6;
     }
     
-    .excel-upload p {
+    .upload-section p {
       color: #94A3B8;
       margin-bottom: 20px;
     }
@@ -398,6 +450,12 @@
       margin-right: 8px;
     }
     
+    .search-stats {
+      font-size: 13px;
+      color: #64748B;
+      margin-left: 12px;
+    }
+    
     .hidden {
       display: none;
     }
@@ -415,11 +473,12 @@
     
     @media (max-width: 768px) {
       .hero h1 { font-size: 32px; }
-      .container { padding: 80px 16px 32px; }
+      .container { padding: 120px 16px 32px; }
       .tools-grid { grid-template-columns: 1fr; }
       .filter-bar { flex-direction: column; align-items: stretch; }
       .sort-select { margin-left: 0; }
       .navbar { flex-direction: column; text-align: center; }
+      .search-container { max-width: 100%; margin: 0; }
       .modal-content { padding: 20px; }
     }
   </style>
@@ -427,20 +486,21 @@
 <body>
 
   <nav class="navbar">
-    <div class="logo" onclick="location.reload()">📚 AI Tool Library</div>
+    <div class="logo" onclick="resetAll()">📚 AI Tool Library</div>
+    <div class="search-container">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search tools by name, category, or description..." oninput="handleSearch()">
+        <button class="clear-search" id="clearSearch" onclick="clearSearch()">✕</button>
+      </div>
+    </div>
     <div class="nav-controls">
       <label for="excelUpload" class="btn btn-success">
         <i class="fa-solid fa-file-excel"></i> Upload CSV/Excel
       </label>
       <input type="file" id="excelUpload" class="file-input" accept=".csv,.xlsx,.xls" onchange="handleFileUpload(event)">
-      <button class="btn btn-secondary" onclick="loadDefaultData()">
-        <i class="fa-solid fa-database"></i> Load Default
-      </button>
       <button class="btn btn-secondary" onclick="exportToCSV()">
         <i class="fa-solid fa-download"></i> Export CSV
-      </button>
-      <button class="btn btn-secondary" onclick="location.reload()">
-        <i class="fa-solid fa-rotate-right"></i> Refresh
       </button>
     </div>
   </nav>
@@ -448,9 +508,11 @@
   <div class="container">
     <div class="hero">
       <h1>Discover & Master AI Tools</h1>
-      <p>Excel/CSV-powered AI tools database - Upload your own data or use our default collection</p>
+      <p>Upload your Excel/CSV file to load AI tools. Add YouTube video IDs to display tutorials!</p>
       <div>
-        <button class="btn btn-primary" onclick="scrollToTools()">Explore Tools</button>
+        <label for="excelUpload" class="btn btn-primary">
+          <i class="fa-solid fa-upload"></i> Upload Your Data
+        </label>
       </div>
       <div class="stats">
         <div class="stat">
@@ -468,12 +530,24 @@
       </div>
     </div>
 
-    <div class="info-banner">
+    <div class="upload-section">
+      <i class="fa-solid fa-cloud-upload-alt" style="font-size: 48px; color: #3B82F6; margin-bottom: 16px; display: block;"></i>
+      <h3>No Tools Loaded Yet</h3>
+      <p>Upload your Excel or CSV file to get started. The file should have columns: id, name, icon, category, desc, fullDesc, tags, rating, reviews, views, url, youtubeId</p>
+      <label for="excelUpload" class="btn btn-primary">
+        <i class="fa-solid fa-file-excel"></i> Choose File
+      </label>
+      <button class="btn btn-secondary" onclick="downloadTemplate()" style="margin-left: 12px;">
+        <i class="fa-solid fa-download"></i> Download Template
+      </button>
+    </div>
+
+    <div class="info-banner hidden" id="infoBanner">
       <i class="fa-solid fa-video"></i> 
       <strong>YouTube Tutorials:</strong> Tools with YouTube IDs will show video tutorials. Add a YouTube ID to any tool to display a tutorial video!
     </div>
 
-    <div class="filter-bar">
+    <div class="filter-bar hidden" id="filterBar">
       <div class="filter-chip active" data-filter="all" onclick="filterTools('all', this)">All</div>
       <div class="filter-chip" data-filter="free" onclick="filterTools('free', this)">🟢 Free</div>
       <div class="filter-chip" data-filter="paid" onclick="filterTools('paid', this)">💛 Paid</div>
@@ -483,14 +557,18 @@
       <select class="sort-select" id="sortSelect" onchange="sortTools(this.value)">
         <option value="popular">Most Popular</option>
         <option value="rating">Highest Rated</option>
-        <option value="newest">Newest First</option>
       </select>
+      <span class="search-stats" id="searchStats"></span>
     </div>
 
     <div id="toolsGrid" class="tools-grid">
-      <div class="loading">
-        <i class="fa-solid fa-spinner fa-spin"></i> Loading tools...<br><br>
-        <small>Upload a CSV/Excel file or use the default database</small>
+      <div class="empty-state">
+        <i class="fa-solid fa-folder-open" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+        <h3>No Tools Loaded</h3>
+        <p>Upload an Excel or CSV file to display AI tools</p>
+        <label for="excelUpload" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">
+          <i class="fa-solid fa-upload"></i> Upload File
+        </label>
       </div>
     </div>
   </div>
@@ -519,27 +597,9 @@
     let allTools = [];
     let currentFilter = "all";
     let currentSort = "popular";
+    let currentSearchTerm = "";
     
-    // Default tools data with YouTube videos
-    const defaultTools = [
-      { id: 1, name: "ChatGPT", icon: "🤖", category: "coding", desc: "Advanced conversational AI by OpenAI", fullDesc: "ChatGPT is a state-of-the-art AI language model developed by OpenAI. It can help you write essays, debug code, brainstorm ideas, answer questions, translate languages, and engage in natural conversation. Powered by GPT-4.", tags: ["free", "trending"], rating: 4.9, reviews: 12400, views: 892000, url: "https://chat.openai.com", youtubeId: "JTxsNm9IdYU" },
-      { id: 2, name: "Midjourney", icon: "🎨", category: "image", desc: "World-class AI image generation", fullDesc: "Midjourney is an independent research lab that produces an AI program that creates images from textual descriptions. Known for its distinctive artistic style and high-quality outputs, Midjourney has become a favorite among designers, artists, and creative professionals worldwide.", tags: ["paid", "trending"], rating: 4.8, reviews: 8900, views: 540000, url: "https://midjourney.com", youtubeId: "8q2PSF7RDFA" },
-      { id: 3, name: "GitHub Copilot", icon: "💻", category: "coding", desc: "Your AI pair programmer", fullDesc: "GitHub Copilot is an AI-powered code completion tool developed by GitHub and OpenAI. It suggests code and entire functions in real-time, helping developers write code faster and with fewer errors.", tags: ["paid"], rating: 4.7, reviews: 6700, views: 410000, url: "https://github.com/features/copilot", youtubeId: "4RlyoHepR9g" },
-      { id: 4, name: "Perplexity AI", icon: "🔍", category: "search", desc: "AI-powered search engine", fullDesc: "Perplexity AI is an AI-powered search engine that combines the power of large language models with real-time web search. Unlike traditional search engines, it provides direct answers to questions while citing its sources, making research faster and more reliable.", tags: ["free", "trending"], rating: 4.7, reviews: 4800, views: 325000, url: "https://perplexity.ai", youtubeId: "1DvIYd0CQzM" },
-      { id: 5, name: "Runway ML", icon: "🎬", category: "video", desc: "AI video editing tools", fullDesc: "Runway is a creative toolkit powered by machine learning. It offers tools for video editing, image generation, and content creation that were previously only possible for large studios. Features include background removal, inpainting, and Gen-2 text-to-video.", tags: ["paid"], rating: 4.6, reviews: 3400, views: 298000, url: "https://runwayml.com", youtubeId: "ARfXmTK0Uvs" },
-      { id: 6, name: "ElevenLabs", icon: "🎙️", category: "audio", desc: "Ultra-realistic AI voice synthesis", fullDesc: "ElevenLabs is an AI voice technology company offering the most realistic text-to-speech software. It can clone voices with just a few samples, generate multilingual speech, and create highly emotive voiceovers for any purpose.", tags: ["freemium", "trending"], rating: 4.8, reviews: 5600, views: 387000, url: "https://elevenlabs.io", youtubeId: "9kDcYo9R0IE" },
-      { id: 7, name: "Claude AI", icon: "🧠", category: "writing", desc: "Anthropic's helpful AI assistant", fullDesc: "Claude is a next-generation AI assistant built by Anthropic. It excels at analysis, writing, and complex reasoning. Claude can handle long documents and maintain context over extended conversations.", tags: ["free", "trending"], rating: 4.8, reviews: 7200, views: 456000, url: "https://claude.ai", youtubeId: "zr9b6E8qQRI" },
-      { id: 8, name: "DALL-E 3", icon: "🎨", category: "image", desc: "AI image generation from OpenAI", fullDesc: "DALL-E 3 is OpenAI's latest image generation model that creates highly detailed and accurate images from natural language descriptions. It understands nuances and details better than previous versions.", tags: ["paid"], rating: 4.7, reviews: 8900, views: 678000, url: "https://openai.com/dall-e-3", youtubeId: "YKmC3rMh3uQ" },
-      { id: 9, name: "Adobe Firefly", icon: "🎨", category: "image", desc: "Generative AI for creatives", fullDesc: "Adobe Firefly is a family of creative generative AI models designed to integrate seamlessly with Adobe products. It's trained on licensed content, making it safe for commercial use.", tags: ["paid"], rating: 4.6, reviews: 3400, views: 234000, url: "https://firefly.adobe.com", youtubeId: "dYhJzDmYvMw" },
-      { id: 10, name: "Synthesia", icon: "🎬", category: "video", desc: "AI video generation platform", fullDesc: "Synthesia allows you to create professional videos with AI avatars and voiceovers. Simply type your script and choose an avatar to generate a video in minutes.", tags: ["paid"], rating: 4.5, reviews: 2800, views: 189000, url: "https://synthesia.io", youtubeId: "6Xp6QkZ8qjw" },
-      { id: 11, name: "Notion AI", icon: "📝", category: "productivity", desc: "AI-powered workspace assistant", fullDesc: "Notion AI is a built-in AI assistant for Notion users. It can help you draft documents, summarize long texts, brainstorm ideas, translate content, and improve your writing.", tags: ["paid"], rating: 4.4, reviews: 2100, views: 175000, url: "https://notion.so/product/ai", youtubeId: "RpUqG3j5k8I" },
-      { id: 12, name: "Stable Diffusion", icon: "🖼️", category: "image", desc: "Open-source image generation", fullDesc: "Stable Diffusion is an open-source deep learning text-to-image model. Unlike closed-source alternatives, it can be run locally on consumer hardware, offering complete privacy and customization.", tags: ["free", "trending"], rating: 4.6, reviews: 7200, views: 498000, url: "https://stability.ai", youtubeId: "6I1cK5Z7j8E" },
-      { id: 13, name: "Gamma", icon: "📊", category: "productivity", desc: "AI presentation generator", fullDesc: "Gamma creates beautiful presentations, documents, and websites with AI assistance. It helps you structure content and design visually appealing presentations quickly.", tags: ["freemium"], rating: 4.7, reviews: 3400, views: 156000, url: "https://gamma.app", youtubeId: "3v7WqP2yY8x" },
-      { id: 14, name: "Replit AI", icon: "💻", category: "coding", desc: "AI coding assistant in browser", fullDesc: "Replit AI helps you code faster with AI-powered suggestions directly in your browser. It can explain code, debug errors, and generate entire functions.", tags: ["free"], rating: 4.6, reviews: 4500, views: 234000, url: "https://replit.com/site/ai", youtubeId: "2LmZ9kP5qR7" },
-      { id: 15, name: "Tome", icon: "📄", category: "productivity", desc: "AI storytelling and presentations", fullDesc: "Tome helps you create compelling narratives and presentations with AI-powered storytelling. It generates outlines, designs slides, and suggests visuals based on your content.", tags: ["freemium"], rating: 4.5, reviews: 2800, views: 123000, url: "https://tome.app", youtubeId: "5NxH7kY3mF9" }
-    ];
-    
-    // Handle file upload (CSV or Excel)
+    // Handle file upload
     function handleFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -547,44 +607,108 @@
       const reader = new FileReader();
       
       reader.onload = function(e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-        
-        // Convert data to tool format
-        allTools = jsonData.map(row => ({
-          id: row.id || row.ID || Date.now() + Math.random(),
-          name: row.name || row.Name || row.tool_name || "Unknown",
-          icon: row.icon || row.Icon || "🤖",
-          category: row.category || row.Category || "other",
-          desc: row.desc || row.Desc || row.description || "",
-          fullDesc: row.fullDesc || row.fullDesc || row.full_description || row.desc || "",
-          tags: typeof row.tags === 'string' ? row.tags.split('|').map(t => t.trim()) : (row.tags || ['free']),
-          rating: parseFloat(row.rating) || 0,
-          reviews: parseInt(row.reviews) || 0,
-          views: parseInt(row.views) || 0,
-          url: row.url || row.URL || row.website || "#",
-          youtubeId: row.youtubeId || row.youtube_id || row.youtube || ""
-        }));
-        
-        updateStats();
-        renderTools();
-        showToast(`✅ Loaded ${allTools.length} tools from file!`);
+        try {
+          let jsonData;
+          
+          if (file.name.endsWith('.csv')) {
+            // Parse CSV
+            const text = e.target.result;
+            const lines = text.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            
+            jsonData = [];
+            for (let i = 1; i < lines.length; i++) {
+              if (!lines[i].trim()) continue;
+              const values = parseCSVLine(lines[i]);
+              const row = {};
+              headers.forEach((header, idx) => {
+                row[header] = values[idx] ? values[idx].replace(/^"|"$/g, '') : '';
+              });
+              jsonData.push(row);
+            }
+          } else {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            jsonData = XLSX.utils.sheet_to_json(firstSheet);
+          }
+          
+          // Convert data to tool format
+          allTools = jsonData.map(row => ({
+            id: row.id || row.ID || Date.now() + Math.random(),
+            name: row.name || row.Name || row.tool_name || "Unknown",
+            icon: row.icon || row.Icon || "🤖",
+            category: row.category || row.Category || "other",
+            desc: row.desc || row.Desc || row.description || "",
+            fullDesc: row.fullDesc || row.fullDesc || row.full_description || row.desc || "",
+            tags: typeof row.tags === 'string' ? row.tags.split('|').map(t => t.trim()) : (row.tags || ['free']),
+            rating: parseFloat(row.rating) || 0,
+            reviews: parseInt(row.reviews) || 0,
+            views: parseInt(row.views) || 0,
+            url: row.url || row.URL || row.website || "#",
+            youtubeId: row.youtubeId || row.youtube_id || row.youtube || ""
+          }));
+          
+          // Show UI elements
+          document.querySelector('.upload-section').classList.add('hidden');
+          document.getElementById('infoBanner').classList.remove('hidden');
+          document.getElementById('filterBar').classList.remove('hidden');
+          
+          updateStats();
+          renderTools();
+          showToast(`✅ Loaded ${allTools.length} tools from file!`);
+        } catch (error) {
+          console.error('Error parsing file:', error);
+          showToast("Error parsing file. Please check the format.", "error");
+        }
       };
       
       if (file.name.endsWith('.csv')) {
-        reader.readAsText(file);
+        reader.readAsText(file, 'UTF-8');
       } else {
         reader.readAsArrayBuffer(file);
       }
     }
     
-    function loadDefaultData() {
-      allTools = JSON.parse(JSON.stringify(defaultTools));
-      updateStats();
-      renderTools();
-      showToast(`📚 Loaded ${allTools.length} default tools with YouTube tutorials`);
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current);
+      return result;
+    }
+    
+    function downloadTemplate() {
+      const template = [
+        ['id', 'name', 'icon', 'category', 'desc', 'fullDesc', 'tags', 'rating', 'reviews', 'views', 'url', 'youtubeId'],
+        [1, 'ChatGPT', '🤖', 'coding', 'Advanced conversational AI', 'ChatGPT is a state-of-the-art AI language model...', 'free|trending', 4.9, 12400, 892000, 'https://chat.openai.com', 'JTxsNm9IdYU'],
+        [2, 'Midjourney', '🎨', 'image', 'World-class AI image generation', 'Midjourney creates stunning artistic images...', 'paid|trending', 4.8, 8900, 540000, 'https://midjourney.com', '8q2PSF7RDFA']
+      ];
+      
+      const csvContent = template.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'ai_tools_template.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast("📊 Template downloaded!");
     }
     
     function exportToCSV() {
@@ -630,11 +754,47 @@
       document.getElementById("statVideos").innerText = videosCount;
     }
     
+    function handleSearch() {
+      const searchInput = document.getElementById('searchInput');
+      const clearBtn = document.getElementById('clearSearch');
+      currentSearchTerm = searchInput.value.toLowerCase().trim();
+      
+      if (currentSearchTerm) {
+        clearBtn.style.display = 'block';
+      } else {
+        clearBtn.style.display = 'none';
+      }
+      
+      renderTools();
+    }
+    
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      currentSearchTerm = '';
+      document.getElementById('clearSearch').style.display = 'none';
+      renderTools();
+    }
+    
     function renderTools() {
       let filtered = allTools.filter(tool => {
-        if (currentFilter === "all") return true;
-        if (currentFilter === "video") return tool.youtubeId && tool.youtubeId.trim();
-        return tool.tags && tool.tags.includes(currentFilter);
+        // Apply filter
+        if (currentFilter === "all") {
+          // pass through
+        } else if (currentFilter === "video") {
+          if (!tool.youtubeId || !tool.youtubeId.trim()) return false;
+        } else {
+          if (!tool.tags || !tool.tags.includes(currentFilter)) return false;
+        }
+        
+        // Apply search
+        if (currentSearchTerm) {
+          return tool.name.toLowerCase().includes(currentSearchTerm) ||
+                 tool.category.toLowerCase().includes(currentSearchTerm) ||
+                 tool.desc.toLowerCase().includes(currentSearchTerm) ||
+                 (tool.fullDesc && tool.fullDesc.toLowerCase().includes(currentSearchTerm));
+        }
+        
+        return true;
       });
       
       filtered.sort((a, b) => {
@@ -643,14 +803,22 @@
         return 0;
       });
       
+      // Update search stats
+      const searchStats = document.getElementById('searchStats');
+      if (currentSearchTerm) {
+        searchStats.textContent = `🔍 Found ${filtered.length} result(s) for "${currentSearchTerm}"`;
+      } else {
+        searchStats.textContent = '';
+      }
+      
       const container = document.getElementById("toolsGrid");
       
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
-            <i class="fa-solid fa-folder-open" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+            <i class="fa-solid fa-search" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
             <h3>No tools found</h3>
-            <p>Try a different filter or upload a CSV/Excel file</p>
+            <p>${currentSearchTerm ? `No results matching "${currentSearchTerm}"` : 'Try a different filter or upload a new file'}</p>
           </div>
         `;
         return;
@@ -659,8 +827,8 @@
       container.innerHTML = filtered.map(tool => `
         <div class="tool-card" onclick="openToolDetail(${tool.id})">
           <div class="tool-icon">${tool.icon || '🤖'}</div>
-          <div class="tool-name">${tool.name}</div>
-          <div class="tool-desc">${(tool.desc || '').substring(0, 100)}${(tool.desc || '').length > 100 ? "..." : ""}</div>
+          <div class="tool-name">${escapeHtml(tool.name)}</div>
+          <div class="tool-desc">${escapeHtml((tool.desc || '').substring(0, 100))}${(tool.desc || '').length > 100 ? "..." : ""}</div>
           <div class="tool-tags">
             ${tool.tags && tool.tags.map(t => `<span class="tag tag-${t}">${t === "free" ? "🟢 Free" : t === "paid" ? "💛 Paid" : t === "freemium" ? "🔵 Freemium" : "🔥 Trending"}</span>`).join("")}
             ${tool.youtubeId && tool.youtubeId.trim() ? `<span class="tag" style="background: rgba(239,68,68,0.2); color: #EF4444;"><i class="fa-brands fa-youtube"></i> Tutorial</span>` : ''}
@@ -671,6 +839,12 @@
           </div>
         </div>
       `).join("");
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
     
     function openToolDetail(toolId) {
@@ -688,7 +862,7 @@
               ${tool.tags && tool.tags.map(t => `<span class="tag tag-${t}">${t === "free" ? "🟢 Free" : t === "paid" ? "💛 Paid" : t === "freemium" ? "🔵 Freemium" : "🔥 Trending"}</span>`).join("")}
               ${hasVideo ? `<span class="tag" style="background: rgba(239,68,68,0.2); color: #EF4444;"><i class="fa-brands fa-youtube"></i> Video Tutorial Available</span>` : ''}
             </div>
-            <p style="color: #94A3B8; margin-bottom: 16px; line-height: 1.6;">${tool.fullDesc || tool.desc || "No description available."}</p>
+            <p style="color: #94A3B8; margin-bottom: 16px; line-height: 1.6;">${escapeHtml(tool.fullDesc || tool.desc || "No description available.")}</p>
             <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
               <a href="${tool.url}" target="_blank" class="btn btn-primary">Visit Website <i class="fa-solid fa-arrow-up-right-from-mks"></i></a>
             </div>
@@ -715,14 +889,14 @@
           <div style="background: rgba(59,130,246,0.1); border-radius: 12px; padding: 20px; text-align: center; margin-top: 20px;">
             <i class="fa-regular fa-circle-question" style="font-size: 32px; color: #3B82F6; margin-bottom: 12px; display: block;"></i>
             <p style="color: #94A3B8;">No video tutorial available for this tool yet.</p>
-            <small style="color: #64748B;">Want to add one? You can add a YouTube ID in the CSV file!</small>
+            <small style="color: #64748B;">Add a YouTube ID in the CSV file to display a tutorial!</small>
           </div>
         `}
         <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);">
           <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
             <i class="fa-regular fa-circle-info"></i> About ${tool.name}
           </h3>
-          <p style="color: #94A3B8; line-height: 1.6;">${tool.fullDesc || tool.desc || "No detailed description available."}</p>
+          <p style="color: #94A3B8; line-height: 1.6;">${escapeHtml(tool.fullDesc || tool.desc || "No detailed description available.")}</p>
         </div>
       `;
       
@@ -747,8 +921,14 @@
       renderTools();
     }
     
-    function scrollToTools() {
-      document.querySelector(".filter-bar").scrollIntoView({ behavior: "smooth" });
+    function resetAll() {
+      clearSearch();
+      currentFilter = "all";
+      currentSort = "popular";
+      document.querySelectorAll(".filter-chip").forEach(el => el.classList.remove("active"));
+      document.querySelector(".filter-chip[data-filter='all']").classList.add("active");
+      document.getElementById('sortSelect').value = "popular";
+      renderTools();
     }
     
     function showToast(message, type = "success") {
@@ -773,7 +953,7 @@
     function showInstructions() {
       alert(
         "🎥 How to Add YouTube Videos to Tools:\n\n" +
-        "1. Export the current data using 'Export CSV'\n" +
+        "1. Export your data using 'Export CSV'\n" +
         "2. Open the CSV file in Excel or any text editor\n" +
         "3. Find the 'youtubeId' column (last column)\n" +
         "4. Add a YouTube video ID (e.g., JTxsNm9IdYU)\n" +
@@ -790,9 +970,6 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeDetailModal();
     });
-    
-    // Load default data on start
-    loadDefaultData();
   </script>
 </body>
 </html>
