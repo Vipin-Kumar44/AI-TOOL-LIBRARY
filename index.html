@@ -22,13 +22,11 @@
             scroll-behavior: smooth;
         }
 
-        /* Modern gradient background for header */
+        /* Modern gradient background for header - REMOVED sticky positioning */
         .header-bg {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            
-            top: 0;
-            z-index: 100;
+            /* Removed position: sticky and z-index to allow natural scrolling */
         }
 
         .container {
@@ -148,7 +146,7 @@
             color: #e2e8f0;
         }
 
-        /* Filter Bar - New Feature */
+        /* Filter Bar */
         .filter-section {
             background: white;
             border-radius: 28px;
@@ -250,7 +248,7 @@
             margin: 48px 0 60px;
         }
 
-        /* Card styling - modern glassmorphism with pricing badge */
+        /* Card styling */
         .tool-card {
             background: white;
             border-radius: 28px;
@@ -364,7 +362,7 @@
             color: #f59e0b;
         }
 
-        /* MODAL (detail container) */
+        /* MODAL */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -621,7 +619,7 @@
 </div>
 
 <main class="container">
-    <!-- NEW FILTER SECTION -->
+    <!-- FILTER SECTION -->
     <div class="filter-section">
         <div class="filter-title">
             <i class="fas fa-sliders-h"></i> Filter & Refine
@@ -640,7 +638,6 @@
                 <h4><i class="fas fa-folder"></i> Categories</h4>
                 <div class="filter-buttons" id="categoryFilters">
                     <button class="filter-btn" data-category="all"><i class="fas fa-layer-group"></i> All</button>
-                    <!-- Categories will be dynamically injected from data -->
                 </div>
             </div>
             <div class="filter-group">
@@ -682,11 +679,7 @@
 </div>
 
 <script>
-    // --------------------------------------------------------------
-    // ENHANCED DATA: Added pricing field (free, paid, freemium) 
-    // and additional categories for richer filtering
-    // All tools from CSV style are preserved and extended
-    // --------------------------------------------------------------
+    // Enhanced data with pricing field
     const toolsData = [
         { id: 1, name: "ChatGPT Pro", icon: "fas fa-comment-dots", category: "Conversation", pricing: "freemium", desc: "Advanced conversational AI with reasoning & creativity.", fullDesc: "ChatGPT Pro offers state-of-the-art language understanding, context-aware conversations, and plugin support for extended functionality. Free tier available, Pro subscription unlocks advanced features.", tags: ["chatbot", "writing", "productivity", "GPT-4"], rating: 4.8, reviews: 12450, views: 980000, url: "https://openai.com/chatgpt", youtubeId: "pBVeW7sZk6M" },
         { id: 2, name: "Midjourney", icon: "fas fa-palette", category: "Image Generation", pricing: "paid", desc: "AI art generator producing stunning visuals from prompts.", fullDesc: "Midjourney transforms text descriptions into high-resolution artistic images. Subscription-based service with different tiers for creators.", tags: ["art", "design", "image generation", "creative"], rating: 4.9, reviews: 8750, views: 1250000, url: "https://midjourney.com", youtubeId: "8yV5PqY5ePM" },
@@ -716,10 +709,10 @@
     let currentCategory = "all";
     let searchTerm = "";
 
-    // Extract unique categories from data
+    // Extract unique categories
     const categories = [...new Set(toolsData.map(tool => tool.category))].sort();
 
-    // Populate category filter buttons dynamically
+    // Populate category filter buttons
     const categoryContainer = document.getElementById('categoryFilters');
     function renderCategoryButtons() {
         let html = `<button class="filter-btn" data-category="all"><i class="fas fa-layer-group"></i> All</button>`;
@@ -728,7 +721,6 @@
         });
         categoryContainer.innerHTML = html;
         
-        // attach event listeners to category buttons
         document.querySelectorAll('[data-category]').forEach(btn => {
             btn.addEventListener('click', () => {
                 currentCategory = btn.getAttribute('data-category');
@@ -749,9 +741,8 @@
         });
     }
     
-    // Update active visual state on filter buttons
+    // Update active visual state
     function updateActiveFiltersUI() {
-        // Update pricing active class
         document.querySelectorAll('[data-pricing]').forEach(btn => {
             if (btn.getAttribute('data-pricing') === currentPricing) {
                 btn.classList.add('active');
@@ -759,7 +750,6 @@
                 btn.classList.remove('active');
             }
         });
-        // Update category active class
         document.querySelectorAll('[data-category]').forEach(btn => {
             if (btn.getAttribute('data-category') === currentCategory) {
                 btn.classList.add('active');
@@ -768,7 +758,6 @@
             }
         });
         
-        // Update info text
         let infoParts = [];
         if (currentPricing !== "all") infoParts.push(`Pricing: ${currentPricing === 'free' ? 'Free' : currentPricing === 'paid' ? 'Paid' : 'Freemium'}`);
         if (currentCategory !== "all") infoParts.push(`Category: ${currentCategory}`);
@@ -781,21 +770,18 @@
         }
     }
     
-    // Apply all filters (pricing, category, search)
+    // Apply all filters
     function getFilteredTools() {
         let filtered = [...toolsData];
         
-        // Pricing filter
         if (currentPricing !== "all") {
             filtered = filtered.filter(tool => tool.pricing === currentPricing);
         }
         
-        // Category filter
         if (currentCategory !== "all") {
             filtered = filtered.filter(tool => tool.category === currentCategory);
         }
         
-        // Search filter
         if (searchTerm.trim() !== "") {
             const term = searchTerm.toLowerCase();
             filtered = filtered.filter(tool => 
@@ -809,7 +795,7 @@
         return filtered;
     }
     
-    // Update stats (total tools count based on original + filtered info)
+    // Update stats
     function updateStatsBar(filteredCount) {
         const total = toolsData.length;
         const avgRating = (toolsData.reduce((acc, t) => acc + t.rating, 0) / total).toFixed(1);
@@ -857,7 +843,6 @@
             `;
         }).join('');
         
-        // attach click events
         document.querySelectorAll('.tool-card').forEach(card => {
             card.addEventListener('click', () => {
                 const id = parseInt(card.getAttribute('data-id'));
@@ -872,7 +857,6 @@
         updateActiveFiltersUI();
     }
     
-    // Helper functions
     function formatNumber(num) {
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
@@ -889,7 +873,6 @@
         });
     }
     
-    // Modal functions
     function openModal(tool) {
         document.getElementById('modalIcon').innerHTML = `<i class="${tool.icon}"></i>`;
         document.getElementById('modalName').innerText = tool.name;
@@ -925,7 +908,6 @@
         document.body.style.overflow = '';
     }
     
-    // Reset all filters
     function resetFilters() {
         currentPricing = "all";
         currentCategory = "all";
