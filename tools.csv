@@ -1,0 +1,7 @@
+id,name,icon,category,desc,fullDesc,tags,rating,reviews,views,url,youtubeId
+1,ChatGPT,🤖,coding,Advanced conversational AI by OpenAI.,ChatGPT is a state-of-the-art AI language model developed by OpenAI. It can help you write essays, debug code, brainstorm ideas, and more.,free|trending,4.9,12400,892000,https://chat.openai.com,JTxsNm9IdYU
+2,Midjourney,🎨,image,World-class AI image generation.,Midjourney creates stunning artistic images from text prompts with unprecedented quality.,paid|trending,4.8,8900,540000,https://midjourney.com,
+3,GitHub Copilot,💻,coding,Your AI pair programmer.,GitHub Copilot suggests code in real-time helping developers write faster.,paid,4.7,6700,410000,https://github.com/features/copilot,
+4,Perplexity AI,🔍,search,AI-powered search engine.,Combines LLMs with real-time web search to provide accurate answers with citations.,free|trending,4.7,4800,325000,https://perplexity.ai,
+5,Runway ML,🎬,video,AI video editing tools.,Creative toolkit with AI-powered video editing and generation.,paid,4.6,3400,298000,https://runwayml.com,
+6,ElevenLabs,🎙️,audio,Ultra-realistic AI voice synthesis.,Clone voices and create natural-sounding speech.,freemium|trending,4.8,5600,387000,https://elevenlabs.io,
