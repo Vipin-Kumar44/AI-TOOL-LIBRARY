@@ -1,682 +1,797 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Tool Library - Discover AI Tools</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0B0F19;
-      color: #F1F5F9;
-      line-height: 1.6;
-    }
-    
-    /* Navigation */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 16px 32px;
-      background: rgba(11, 15, 25, 0.95);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      z-index: 1000;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .search-container {
-      flex: 1;
-      max-width: 400px;
-    }
-    
-    .search-box {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 50px;
-      padding: 10px 18px;
-      transition: all 0.3s;
-    }
-    
-    .search-box:focus-within {
-      border-color: #3B82F6;
-      background: rgba(59,130,246,0.1);
-    }
-    
-    .search-box i {
-      color: #64748B;
-      margin-right: 12px;
-    }
-    
-    .search-box input {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 14px;
-      width: 100%;
-      outline: none;
-    }
-    
-    .search-box input::placeholder {
-      color: #64748B;
-    }
-    
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 100px 24px 40px;
-    }
-    
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 40px 0 60px;
-    }
-    
-    .hero h1 {
-      font-size: 56px;
-      font-weight: 800;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .hero p {
-      font-size: 18px;
-      color: #94A3B8;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    /* Stats */
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      margin: 48px 0 32px;
-      flex-wrap: wrap;
-    }
-    
-    .stat {
-      text-align: center;
-    }
-    
-    .stat-number {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .stat-label {
-      font-size: 12px;
-      color: #64748B;
-      margin-top: 4px;
-    }
-    
-    /* Filter Bar */
-    .filter-bar {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 32px 0;
-      align-items: center;
-    }
-    
-    .filter-chip {
-      padding: 8px 20px;
-      border-radius: 50px;
-      background: rgba(255,255,255,0.05);
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    .filter-chip:hover {
-      background: rgba(59,130,246,0.2);
-      border-color: #3B82F6;
-    }
-    
-    .filter-chip.active {
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      border-color: transparent;
-    }
-    
-    .sort-select {
-      margin-left: auto;
-      padding: 8px 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-    }
-    
-    /* Tools Grid */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
-      margin-top: 24px;
-    }
-    
-    .tool-card {
-      background: #131929;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 24px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .tool-card:hover {
-      transform: translateY(-4px);
-      border-color: #3B82F6;
-      box-shadow: 0 8px 24px rgba(59,130,246,0.1);
-    }
-    
-    .tool-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-    
-    .tool-name {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    
-    .tool-desc {
-      font-size: 14px;
-      color: #94A3B8;
-      margin-bottom: 16px;
-      line-height: 1.5;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    
-    .tool-tags {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-    
-    .tag {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    
-    .tag-free { background: rgba(16,185,129,0.2); color: #10B981; }
-    .tag-paid { background: rgba(245,158,11,0.2); color: #F59E0B; }
-    .tag-freemium { background: rgba(59,130,246,0.2); color: #3B82F6; }
-    .tag-trending { background: rgba(236,72,153,0.2); color: #EC4899; }
-    
-    .tool-meta {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 13px;
-      color: #64748B;
-    }
-    
-    /* Modal */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-    
-    .modal-content {
-      background: #111827;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 24px;
-      max-width: 900px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 32px;
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    .close-modal {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    
-    .close-modal:hover {
-      background: rgba(239,68,68,0.2);
-      color: #EF4444;
-    }
-    
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      margin: 24px 0;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #000;
-    }
-    
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    
-    .youtube-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(239,68,68,0.2);
-      padding: 6px 12px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      color: #EF4444;
-      font-size: 13px;
-    }
-    
-    .loading {
-      text-align: center;
-      padding: 60px;
-      color: #64748B;
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 60px;
-      color: #64748B;
-    }
-    
-    .footer {
-      text-align: center;
-      padding: 40px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: 60px;
-      color: #64748B;
-      font-size: 14px;
-    }
-    
-    .search-stats {
-      font-size: 13px;
-      color: #64748B;
-      margin-left: 12px;
-    }
-    
-    .hidden {
-      display: none;
-    }
-    
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 32px; }
-      .container { padding: 120px 16px 32px; }
-      .tools-grid { grid-template-columns: 1fr; }
-      .filter-bar { flex-direction: column; align-items: stretch; }
-      .sort-select { margin-left: 0; }
-      .navbar { flex-direction: column; text-align: center; }
-      .search-container { max-width: 100%; width: 100%; }
-      .stats { gap: 24px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AI Tool Library | Discover Amazing AI Tools</title>
+    <!-- Google Fonts & Font Awesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Modern gradient background for header */
+        .header-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 32px;
+            color: #3b82f6;
+            background: rgba(59,130,246,0.15);
+            padding: 8px;
+            border-radius: 16px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(4px);
+            border-radius: 60px;
+            padding: 8px 20px;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .search-wrapper i {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        #searchInput {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 1rem;
+            width: 240px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #searchInput::placeholder {
+            color: #cbd5e1;
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 48px 0 32px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f1f5f9, #cbd5e6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats bar */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin: 24px 0 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.05);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+
+        /* Main grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+            margin: 48px 0 60px;
+        }
+
+        /* Card styling - modern glassmorphism */
+        .tool-card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
+            border: 1px solid rgba(203,213,225,0.5);
+            backdrop-filter: blur(0px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
+            border-color: #cbd5e1;
+            background: #ffffff;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tool-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(145deg, #eef2ff, #e0e7ff);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #2563eb;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+
+        .tool-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #0f172a;
+        }
+
+        .category-badge {
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #1e40af;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .tool-desc {
+            color: #334155;
+            font-size: 0.9rem;
+            margin: 12px 0;
+            line-height: 1.45;
+            flex: 1;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #475569;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 14px;
+        }
+
+        .rating i, .reviews i, .views i {
+            margin-right: 4px;
+            color: #f59e0b;
+        }
+
+        .views i {
+            color: #64748b;
+        }
+
+        /* MODAL (detail container) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.2s, opacity 0.2s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-container {
+            background: white;
+            max-width: 720px;
+            width: 100%;
+            max-height: 85vh;
+            border-radius: 40px;
+            overflow-y: auto;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+            transform: scale(0.96);
+            transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: modalPop 0.25s ease-out forwards;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.96);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 28px 28px 16px 28px;
+            border-bottom: 1px solid #eef2ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .modal-icon {
+            width: 58px;
+            height: 58px;
+            background: #eef2ff;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .modal-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .close-modal {
+            background: #f1f5f9;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            border-radius: 60px;
+            transition: 0.2s;
+            color: #1e293b;
+        }
+
+        .close-modal:hover {
+            background: #e2e8f0;
+            transform: scale(0.96);
+        }
+
+        .modal-body {
+            padding: 24px 28px 32px;
+        }
+
+        .full-desc {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 24px;
+            margin: 18px 0;
+            line-height: 1.6;
+            color: #0f172a;
+        }
+
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 18px 0;
+        }
+
+        .tag {
+            background: #eef2ff;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .detail-stats {
+            display: flex;
+            gap: 24px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 12px 0;
+        }
+
+        .detail-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f1f5f9;
+            padding: 8px 18px;
+            border-radius: 60px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-visit, .btn-youtube {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-visit {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-visit:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        .btn-youtube {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-youtube:hover {
+            background: #fecaca;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 48px;
+            margin: 40px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-wrapper {
+                width: 100%;
+            }
+            #searchInput {
+                width: 100%;
+            }
+            .hero h2 {
+                font-size: 1.9rem;
+            }
+            .tools-grid {
+                gap: 20px;
+            }
+            .modal-container {
+                max-width: 95%;
+            }
+            .modal-name {
+                font-size: 1.4rem;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            border-top: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="logo">📚 AI Tool Library</div>
-    <div class="search-container">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Search tools by name, category..." oninput="handleSearch()">
-      </div>
-    </div>
-  </nav>
-
-  <div class="container">
-    <div class="hero">
-      <h1>Discover & Master AI Tools</h1>
-      <p>Curated collection of the best AI tools with community reviews and video tutorials</p>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-number" id="statTools">0</div>
-          <div class="stat-label">AI Tools</div>
+<div class="header-bg">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <div>
+                    <h1>AI Tool Library</h1>
+                    <span>Curated intelligence</span>
+                </div>
+            </div>
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search tools by name, category or tag...">
+            </div>
         </div>
-        <div class="stat">
-          <div class="stat-number" id="statReviews">0</div>
-          <div class="stat-label">Total Reviews</div>
+        <div class="hero">
+            <h2>Discover the future of AI</h2>
+            <p>Explore hand-picked AI tools, from productivity to creative engines</p>
+            <div class="stats" id="statsContainer">
+                <!-- dynamic stats via js -->
+            </div>
         </div>
-        <div class="stat">
-          <div class="stat-number" id="statVideos">0</div>
-          <div class="stat-label">Video Tutorials</div>
-        </div>
-      </div>
     </div>
+</div>
 
-    <div class="filter-bar">
-      <div class="filter-chip active" data-filter="all" onclick="filterTools('all', this)">All</div>
-      <div class="filter-chip" data-filter="free" onclick="filterTools('free', this)">🟢 Free</div>
-      <div class="filter-chip" data-filter="paid" onclick="filterTools('paid', this)">💛 Paid</div>
-      <div class="filter-chip" data-filter="freemium" onclick="filterTools('freemium', this)">🔵 Freemium</div>
-      <div class="filter-chip" data-filter="trending" onclick="filterTools('trending', this)">🔥 Trending</div>
-      <div class="filter-chip" data-filter="video" onclick="filterTools('video', this)">🎬 Has Video</div>
-      <select class="sort-select" id="sortSelect" onchange="sortTools(this.value)">
-        <option value="popular">Most Popular</option>
-        <option value="rating">Highest Rated</option>
-      </select>
-      <span class="search-stats" id="searchStats"></span>
-    </div>
-
+<main class="container">
     <div id="toolsGrid" class="tools-grid">
-      <div class="loading">
-        <i class="fa-solid fa-spinner fa-spin"></i> Loading tools...
-      </div>
+        <!-- Cards injected from JS (tools.css simulated data) -->
     </div>
-  </div>
+</main>
 
-  <div class="footer">
-    <p>📊 Data from CSV file | 🎥 YouTube tutorials | ⭐ Community ratings</p>
-  </div>
+<footer>
+    <p>⚡ AI Tool Library — curated with intelligence • Data from tools library</p>
+</footer>
 
-  <!-- Tool Detail Modal -->
-  <div id="detailModal" class="modal hidden">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="detailTitle"></h2>
-        <button class="close-modal" onclick="closeDetailModal()">✕</button>
-      </div>
-      <div id="detailContent"></div>
+<!-- Modal Detail Container -->
+<div id="toolModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-title">
+                <div class="modal-icon" id="modalIcon"><i class="fas fa-robot"></i></div>
+                <div>
+                    <div class="modal-name" id="modalName">Tool Name</div>
+                    <span id="modalCategoryBadge" class="category-badge" style="margin-top: 6px;">Category</span>
+                </div>
+            </div>
+            <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="full-desc" id="modalFullDesc">Full description will appear here...</div>
+            <div class="tag-group" id="modalTags"></div>
+            <div class="detail-stats" id="modalStats"></div>
+            <div class="action-buttons" id="modalActions"></div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <script>
-    let allTools = [];
-    let currentFilter = "all";
-    let currentSort = "popular";
-    let currentSearchTerm = "";
-    
-    // Load tools from CSV file
-    async function loadTools() {
-      try {
-        const response = await fetch('tools.csv');
-        const csvText = await response.text();
-        const tools = parseCSV(csvText);
-        allTools = tools;
-        updateStats();
-        renderTools();
-      } catch (error) {
-        console.error('Error loading tools:', error);
-        document.getElementById('toolsGrid').innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-database" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-            <h3>No tools found</h3>
-            <p>Make sure tools.csv file exists in the same folder</p>
-          </div>
-        `;
-      }
-    }
-    
-    function parseCSV(csvText) {
-      const lines = csvText.trim().split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-      const tools = [];
-      
-      for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        const values = parseCSVLine(lines[i]);
-        const tool = {};
-        headers.forEach((header, idx) => {
-          let value = values[idx] ? values[idx].replace(/^"|"$/g, '') : '';
-          if (header === 'tags') {
-            tool[header] = value.split('|').map(t => t.trim());
-          } else if (['id', 'rating', 'reviews', 'views'].includes(header)) {
-            tool[header] = parseFloat(value) || 0;
-          } else {
-            tool[header] = value;
-          }
-        });
-        tools.push(tool);
-      }
-      return tools;
-    }
-    
-    function parseCSVLine(line) {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-          result.push(current);
-          current = '';
-        } else {
-          current += char;
+<script>
+    // --------------------------------------------------------------
+    // DATA: tools array (mimicking data from "tools.css" with columns)
+    // columns: id, name, icon, category, desc, fullDesc, tags, rating, reviews, views, url, youtubeId
+    // --------------------------------------------------------------
+    const toolsData = [
+        {
+            id: 1,
+            name: "ChatGPT Pro",
+            icon: "fas fa-comment-dots",
+            category: "Conversation",
+            desc: "Advanced conversational AI with reasoning & creativity.",
+            fullDesc: "ChatGPT Pro offers state-of-the-art language understanding, context-aware conversations, and plugin support for extended functionality. Ideal for brainstorming, coding help, and creative writing.",
+            tags: ["chatbot", "writing", "productivity", "GPT-4"],
+            rating: 4.8,
+            reviews: 12450,
+            views: 980000,
+            url: "https://openai.com/chatgpt",
+            youtubeId: "pBVeW7sZk6M"
+        },
+        {
+            id: 2,
+            name: "Midjourney",
+            icon: "fas fa-palette",
+            category: "Image Generation",
+            desc: "AI art generator producing stunning visuals from prompts.",
+            fullDesc: "Midjourney transforms text descriptions into high-resolution artistic images. Used by designers and artists worldwide to explore new creative frontiers. Supports upscaling and style variations.",
+            tags: ["art", "design", "image generation", "creative"],
+            rating: 4.9,
+            reviews: 8750,
+            views: 1250000,
+            url: "https://midjourney.com",
+            youtubeId: "8yV5PqY5ePM"
+        },
+        {
+            id: 3,
+            name: "Runway ML",
+            icon: "fas fa-video",
+            category: "Video Editing",
+            desc: "AI-powered video creation and editing tools.",
+            fullDesc: "Runway ML brings machine learning to creators. Edit videos with text prompts, remove backgrounds, generate new scenes, and collaborate in real-time. Next-gen creative suite.",
+            tags: ["video", "editing", "generative AI", "multimedia"],
+            rating: 4.7,
+            reviews: 3400,
+            views: 512000,
+            url: "https://runwayml.com",
+            youtubeId: "AR5Qx2JY-n4"
+        },
+        {
+            id: 4,
+            name: "Jasper AI",
+            icon: "fas fa-pen-fancy",
+            category: "Copywriting",
+            desc: "AI writing assistant for blogs, ads, and emails.",
+            fullDesc: "Jasper AI helps you write high-converting copy in seconds. With 50+ templates and SEO integration, it's the ultimate assistant for marketers and content teams.",
+            tags: ["writing", "marketing", "seo", "copywriting"],
+            rating: 4.6,
+            reviews: 5620,
+            views: 780000,
+            url: "https://jasper.ai",
+            youtubeId: "H4MhB7B2H_U"
+        },
+        {
+            id: 5,
+            name: "Synthesia",
+            icon: "fas fa-user-astronaut",
+            category: "Video Avatars",
+            desc: "Create AI videos with realistic digital avatars.",
+            fullDesc: "Synthesia allows you to generate professional videos with AI avatars speaking your script. Supports 120+ languages, perfect for training, marketing, and internal comms.",
+            tags: ["video", "avatars", "text-to-speech", "corporate"],
+            rating: 4.8,
+            reviews: 2890,
+            views: 412000,
+            url: "https://synthesia.io",
+            youtubeId: "gWwCExrIu1U"
+        },
+        {
+            id: 6,
+            name: "Gamma",
+            icon: "fas fa-chalkboard-user",
+            category: "Presentations",
+            desc: "AI-powered presentation & document generator.",
+            fullDesc: "Gamma creates beautiful, engaging presentations and documents in minutes. AI helps structure content, design slides, and add interactive elements without design skills.",
+            tags: ["presentation", "productivity", "design", "slides"],
+            rating: 4.5,
+            reviews: 1950,
+            views: 254000,
+            url: "https://gamma.app",
+            youtubeId: "iZnLZ7yE_gU"
+        },
+        {
+            id: 7,
+            name: "Perplexity AI",
+            icon: "fas fa-globe",
+            category: "Research",
+            desc: "AI search engine with cited answers.",
+            fullDesc: "Perplexity combines search and conversational AI to provide real-time, cited answers. Perfect for research, fact-checking, and deep dives into complex topics.",
+            tags: ["search", "research", "knowledge", "AI assistant"],
+            rating: 4.8,
+            reviews: 4200,
+            views: 860000,
+            url: "https://perplexity.ai",
+            youtubeId: "e_0XbQeFc94"
+        },
+        {
+            id: 8,
+            name: "Krea AI",
+            icon: "fas fa-magic",
+            category: "Design",
+            desc: "Real-time AI design & pattern generator.",
+            fullDesc: "Krea AI generates stunning designs, patterns, and illustrations with instant feedback. Leverage AI for creative exploration and brand assets.",
+            tags: ["design", "real-time", "graphics", "creative"],
+            rating: 4.4,
+            reviews: 1320,
+            views: 189000,
+            url: "https://krea.ai",
+            youtubeId: "A5_aVrYZDZk"
         }
-      }
-      result.push(current);
-      return result;
-    }
-    
+    ];
+
+    // DOM elements
+    const toolsGrid = document.getElementById('toolsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const statsContainer = document.getElementById('statsContainer');
+    const modalOverlay = document.getElementById('toolModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    // Helper: render stats (total tools, avg rating)
     function updateStats() {
-      document.getElementById("statTools").innerText = allTools.length;
-      const totalReviews = allTools.reduce((sum, t) => sum + (t.reviews || 0), 0);
-      document.getElementById("statReviews").innerText = (totalReviews / 1000).toFixed(1) + "k+";
-      const videosCount = allTools.filter(t => t.youtubeId && t.youtubeId.trim()).length;
-      document.getElementById("statVideos").innerText = videosCount;
+        const total = toolsData.length;
+        const avgRating = (toolsData.reduce((acc, t) => acc + t.rating, 0) / total).toFixed(1);
+        statsContainer.innerHTML = `
+            <div class="stat-item"><i class="fas fa-cubes"></i> ${total} AI Tools</div>
+            <div class="stat-item"><i class="fas fa-star"></i> ★ ${avgRating} avg rating</div>
+            <div class="stat-item"><i class="fas fa-eye"></i> ${(toolsData.reduce((acc, t) => acc + t.views, 0) / 1000).toFixed(0)}K+ views</div>
+        `;
     }
-    
-    function handleSearch() {
-      currentSearchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-      renderTools();
-    }
-    
-    function renderTools() {
-      let filtered = allTools.filter(tool => {
-        if (currentFilter !== "all" && currentFilter !== "video") {
-          if (!tool.tags || !tool.tags.includes(currentFilter)) return false;
+
+    // Render card list based on search filter
+    function renderCards(filterText = "") {
+        const searchTerm = filterText.toLowerCase().trim();
+        let filteredTools = toolsData;
+        if (searchTerm !== "") {
+            filteredTools = toolsData.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm) ||
+                tool.category.toLowerCase().includes(searchTerm) ||
+                tool.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                tool.desc.toLowerCase().includes(searchTerm)
+            );
         }
-        if (currentFilter === "video") {
-          if (!tool.youtubeId || !tool.youtubeId.trim()) return false;
+
+        if (filteredTools.length === 0) {
+            toolsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-database" style="font-size: 3rem; opacity: 0.5;"></i><h3 style="margin: 20px 0 8px;">No tools found</h3><p>Try adjusting your search keywords</p></div>`;
+            return;
+        }
+
+        toolsGrid.innerHTML = filteredTools.map(tool => `
+            <div class="tool-card" data-id="${tool.id}">
+                <div class="card-header">
+                    <div class="tool-icon"><i class="${tool.icon}"></i></div>
+                    <div>
+                        <div class="tool-name">${escapeHtml(tool.name)}</div>
+                        <span class="category-badge">${escapeHtml(tool.category)}</span>
+                    </div>
+                </div>
+                <div class="tool-desc">${escapeHtml(tool.desc)}</div>
+                <div class="meta-row">
+                    <span class="rating"><i class="fas fa-star"></i> ${tool.rating}</span>
+                    <span class="reviews"><i class="fas fa-user-friends"></i> ${formatNumber(tool.reviews)}</span>
+                    <span class="views"><i class="fas fa-eye"></i> ${formatNumber(tool.views)}</span>
+                </div>
+            </div>
+        `).join('');
+
+        // attach click event to each card
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const id = parseInt(card.getAttribute('data-id'));
+                const tool = toolsData.find(t => t.id === id);
+                if (tool) openModal(tool);
+            });
+        });
+    }
+
+    // helper: format numbers like 12450 -> 12.4K
+    function formatNumber(num) {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return num.toString();
+    }
+
+    // Open modal with full details
+    function openModal(tool) {
+        // Set modal content
+        document.getElementById('modalIcon').innerHTML = `<i class="${tool.icon}"></i>`;
+        document.getElementById('modalName').innerText = tool.name;
+        const modalCat = document.getElementById('modalCategoryBadge');
+        modalCat.innerText = tool.category;
+        document.getElementById('modalFullDesc').innerHTML = `<i class="fas fa-align-left" style="margin-right: 10px; color:#3b82f6;"></i> ${escapeHtml(tool.fullDesc)}`;
+        
+        // Tags
+        const tagsContainer = document.getElementById('modalTags');
+        tagsContainer.innerHTML = tool.tags.map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`).join('');
+        
+        // Stats: rating, reviews, views
+        document.getElementById('modalStats').innerHTML = `
+            <div class="detail-stat"><i class="fas fa-star" style="color:#f59e0b;"></i> ${tool.rating} / 5.0</div>
+            <div class="detail-stat"><i class="fas fa-comment-dots"></i> ${formatNumber(tool.reviews)} reviews</div>
+            <div class="detail-stat"><i class="fas fa-eye"></i> ${formatNumber(tool.views)} views</div>
+        `;
+        
+        // Action buttons: visit URL and YouTube if youtubeId exists
+        let youtubeHtml = '';
+        if (tool.youtubeId && tool.youtubeId.trim() !== '') {
+            youtubeHtml = `<a href="https://www.youtube.com/watch?v=${tool.youtubeId}" target="_blank" rel="noopener noreferrer" class="btn-youtube"><i class="fab fa-youtube"></i> Watch Demo</a>`;
+        } else {
+            youtubeHtml = `<a href="#" style="display: none;"></a>`;
         }
         
-        if (currentSearchTerm) {
-          return tool.name.toLowerCase().includes(currentSearchTerm) ||
-                 tool.category.toLowerCase().includes(currentSearchTerm) ||
-                 tool.desc.toLowerCase().includes(currentSearchTerm);
-        }
-        return true;
-      });
-      
-      filtered.sort((a, b) => {
-        if (currentSort === "popular") return (b.views || 0) - (a.views || 0);
-        if (currentSort === "rating") return (b.rating || 0) - (a.rating || 0);
-        return 0;
-      });
-      
-      const searchStats = document.getElementById('searchStats');
-      if (currentSearchTerm) {
-        searchStats.textContent = `🔍 ${filtered.length} result(s)`;
-      } else {
-        searchStats.textContent = '';
-      }
-      
-      const container = document.getElementById("toolsGrid");
-      
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-search" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-            <h3>No tools found</h3>
-            <p>Try a different search term or filter</p>
-          </div>
+        document.getElementById('modalActions').innerHTML = `
+            <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="btn-visit"><i class="fas fa-external-link-alt"></i> Visit Website</a>
+            ${youtubeHtml}
         `;
-        return;
-      }
-      
-      container.innerHTML = filtered.map(tool => `
-        <div class="tool-card" onclick="openToolDetail(${tool.id})">
-          <div class="tool-icon">${tool.icon || '🤖'}</div>
-          <div class="tool-name">${escapeHtml(tool.name)}</div>
-          <div class="tool-desc">${escapeHtml((tool.desc || '').substring(0, 100))}${(tool.desc || '').length > 100 ? "..." : ""}</div>
-          <div class="tool-tags">
-            ${tool.tags && tool.tags.map(t => `<span class="tag tag-${t}">${t === "free" ? "🟢 Free" : t === "paid" ? "💛 Paid" : t === "freemium" ? "🔵 Freemium" : "🔥 Trending"}</span>`).join("")}
-            ${tool.youtubeId && tool.youtubeId.trim() ? `<span class="tag" style="background: rgba(239,68,68,0.2); color: #EF4444;"><i class="fa-brands fa-youtube"></i> Tutorial</span>` : ''}
-          </div>
-          <div class="tool-meta">
-            <span>⭐ ${tool.rating || 0} (${tool.reviews || 0})</span>
-            <span>👁️ ${((tool.views || 0) / 1000).toFixed(0)}k</span>
-          </div>
-        </div>
-      `).join("");
+        
+        // Show modal with active class
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
     
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
     }
     
-    function openToolDetail(toolId) {
-      const tool = allTools.find(t => t.id == toolId);
-      if (!tool) return;
-      
-      const hasVideo = tool.youtubeId && tool.youtubeId.trim();
-      
-      document.getElementById("detailTitle").innerHTML = tool.name;
-      document.getElementById("detailContent").innerHTML = `
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
-          <div style="font-size: 64px;">${tool.icon || '🤖'}</div>
-          <div style="flex: 1;">
-            <div class="tool-tags" style="margin-bottom: 12px;">
-              ${tool.tags && tool.tags.map(t => `<span class="tag tag-${t}">${t === "free" ? "🟢 Free" : t === "paid" ? "💛 Paid" : t === "freemium" ? "🔵 Freemium" : "🔥 Trending"}</span>`).join("")}
-              ${hasVideo ? `<span class="tag" style="background: rgba(239,68,68,0.2); color: #EF4444;"><i class="fa-brands fa-youtube"></i> Video Tutorial</span>` : ''}
-            </div>
-            <p style="color: #94A3B8; margin-bottom: 16px; line-height: 1.6;">${escapeHtml(tool.fullDesc || tool.desc || "No description available.")}</p>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
-              <a href="${tool.url}" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, #3B82F6, #8B5CF6); border-radius: 12px; color: white; text-decoration: none; font-weight: 600;">Visit Website <i class="fa-solid fa-arrow-up-right-from-mks"></i></a>
-            </div>
-            <div style="display: flex; gap: 24px; color: #64748B; font-size: 14px; flex-wrap: wrap;">
-              <span><i class="fa-regular fa-star"></i> ${tool.rating}/5 (${tool.reviews} reviews)</span>
-              <span><i class="fa-regular fa-eye"></i> ${(tool.views || 0).toLocaleString()} views</span>
-              <span><i class="fa-regular fa-folder"></i> ${tool.category}</span>
-            </div>
-          </div>
-        </div>
-        ${hasVideo ? `
-          <div class="youtube-badge">
-            <i class="fa-brands fa-youtube"></i> Watch Tutorial
-          </div>
-          <div class="video-wrapper">
-            <iframe 
-              src="https://www.youtube.com/embed/${tool.youtubeId}" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen>
-            </iframe>
-          </div>
-        ` : ''}
-      `;
-      
-      document.getElementById("detailModal").classList.remove("hidden");
-      document.body.style.overflow = "hidden";
+    // Helper to escape HTML to avoid injection
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
     }
     
-    function closeDetailModal() {
-      document.getElementById("detailModal").classList.add("hidden");
-      document.body.style.overflow = "";
-    }
-    
-    function filterTools(tag, element) {
-      currentFilter = tag;
-      document.querySelectorAll(".filter-chip").forEach(el => el.classList.remove("active"));
-      element.classList.add("active");
-      renderTools();
-    }
-    
-    function sortTools(value) {
-      currentSort = value;
-      renderTools();
-    }
-    
-    // Close modal on escape
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeDetailModal();
+    // Event listeners
+    searchInput.addEventListener('input', (e) => {
+        renderCards(e.target.value);
     });
     
-    // Load tools on page load
-    loadTools();
-  </script>
+    closeModalBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeModal();
+    });
+    
+    // initial render
+    updateStats();
+    renderCards('');
+    
+    // optional: close on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            closeModal();
+        }
+    });
+</script>
 </body>
 </html>
