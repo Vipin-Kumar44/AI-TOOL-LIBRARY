@@ -1,16 +1,16 @@
 id,name,icon,category,desc,fullDesc,tags,rating,reviews,views,url,youtubeId
 1,ChatGPT,🤖,coding,Advanced conversational AI by OpenAI.,"ChatGPT is a state-of-the-art AI language model developed by OpenAI. It can help you write essays, debug code, brainstorm ideas, and more.",free|trending,4.9,12400,892000,https://chat.openai.com,JTxsNm9IdYU
-2,Midjourney,🎨,image,World-class AI image generation.,"Midjourney creates stunning artistic images from text prompts with unprecedented quality.",paid|trending,4.8,8900,540000,https://midjourney.com,
-3,GitHub Copilot,💻,coding,Your AI pair programmer.,"GitHub Copilot suggests code in real-time helping developers write faster.",paid,4.7,6700,410000,https://github.com/features/copilot,
-4,Perplexity AI,🔍,search,AI-powered search engine.,"Combines LLMs with real-time web search to provide accurate answers with citations.",free|trending,4.7,4800,325000,https://perplexity.ai,
-5,Runway ML,🎬,video,AI video editing tools.,"Creative toolkit with AI-powered video editing and generation.",paid,4.6,3400,298000,https://runwayml.com,
-6,ElevenLabs,🎙️,audio,Ultra-realistic AI voice synthesis.,"Clone voices and create natural-sounding speech.",freemium|trending,4.8,5600,387000,https://elevenlabs.io,
-7,Claude AI,🧠,writing,Anthropic's helpful AI assistant.,"Claude is a next-generation AI assistant built by Anthropic. It excels at analysis, writing, and complex reasoning.",free|trending,4.8,7200,456000,https://claude.ai,
-8,DALL-E 3,🎨,image,AI image generation from OpenAI.,"Create realistic images and art from natural language descriptions.",paid,4.7,8900,678000,https://openai.com/dall-e-3,
-9,Adobe Firefly,🎨,image,Generative AI for creatives.,"Adobe's AI image generator trained on licensed content for commercial use.",paid,4.6,3400,234000,https://firefly.adobe.com,
-10,Synthesia,🎬,video,AI video generation platform.,"Create professional videos with AI avatars and voiceovers in minutes.",paid,4.5,2800,189000,https://synthesia.io,
-11,Notion AI,📝,productivity,AI-powered workspace assistant.,"Supercharge your Notion workspace with AI for writing, brainstorming, and organizing.",paid,4.4,2100,175000,https://notion.so/product/ai,
-12,Stable Diffusion,🖼️,image,Open-source image generation.,"Free and open-source AI model that generates images from text. Run it locally on your own computer.",free|trending,4.6,7200,498000,https://stability.ai,
-13,Gamma,📊,productivity,AI presentation generator.,"Create beautiful presentations, documents, and websites with AI assistance.",freemium,4.7,3400,156000,https://gamma.app,
-14,Replit AI,💻,coding,AI coding assistant in browser.,"Get AI help with coding directly in your Replit development environment.",free,4.6,4500,234000,https://replit.com/site/ai,
-15,Tome,📄,productivity,AI storytelling and presentations.,"Create compelling narratives and presentations with AI-powered storytelling.",freemium,4.5,2800,123000,https://tome.app,
+2,Midjourney,🎨,image,World-class AI image generation.,"Midjourney creates stunning artistic images from text prompts with unprecedented quality.",paid|trending,4.8,8900,540000,https://midjourney.com,8q2PSF7RDFA
+3,GitHub Copilot,💻,coding,Your AI pair programmer.,"GitHub Copilot suggests code in real-time helping developers write faster.",paid,4.7,6700,410000,https://github.com/features/copilot,4RlyoHepR9g
+4,Perplexity AI,🔍,search,AI-powered search engine.,"Combines LLMs with real-time web search to provide accurate answers with citations.",free|trending,4.7,4800,325000,https://perplexity.ai,1DvIYd0CQzM
+5,Runway ML,🎬,video,AI video editing tools.,"Creative toolkit with AI-powered video editing and generation.",paid,4.6,3400,298000,https://runwayml.com,ARfXmTK0Uvs
+6,ElevenLabs,🎙️,audio,Ultra-realistic AI voice synthesis.,"Clone voices and create natural-sounding speech.",freemium|trending,4.8,5600,387000,https://elevenlabs.io,9kDcYo9R0IE
+7,Claude AI,🧠,writing,Anthropic's helpful AI assistant.,"Claude is a next-generation AI assistant built by Anthropic. It excels at analysis, writing, and complex reasoning.",free|trending,4.8,7200,456000,https://claude.ai,zr9b6E8qQRI
+8,DALL-E 3,🎨,image,AI image generation from OpenAI.,"Create realistic images and art from natural language descriptions.",paid,4.7,8900,678000,https://openai.com/dall-e-3,YKmC3rMh3uQ
+9,Adobe Firefly,🎨,image,Generative AI for creatives.,"Adobe's AI image generator trained on licensed content for commercial use.",paid,4.6,3400,234000,https://firefly.adobe.com,dYhJzDmYvMw
+10,Synthesia,🎬,video,AI video generation platform.,"Create professional videos with AI avatars and voiceovers in minutes.",paid,4.5,2800,189000,https://synthesia.io,6Xp6QkZ8qjw
+11,Notion AI,📝,productivity,AI-powered workspace assistant.,"Supercharge your Notion workspace with AI for writing, brainstorming, and organizing.",paid,4.4,2100,175000,https://notion.so/product/ai,RpUqG3j5k8I
+12,Stable Diffusion,🖼️,image,Open-source image generation.,"Free and open-source AI model that generates images from text. Run it locally on your own computer.",free|trending,4.6,7200,498000,https://stability.ai,6I1cK5Z7j8E
+13,Gamma,📊,productivity,AI presentation generator.,"Create beautiful presentations, documents, and websites with AI assistance.",freemium,4.7,3400,156000,https://gamma.app,3v7WqP2yY8x
+14,Replit AI,💻,coding,AI coding assistant in browser.,"Get AI help with coding directly in your Replit development environment.",free,4.6,4500,234000,https://replit.com/site/ai,2LmZ9kP5qR7
+15,Tome,📄,productivity,AI storytelling and presentations.,"Create compelling narratives and presentations with AI-powered storytelling.",freemium,4.5,2800,123000,https://tome.app,5NxH7kY3mF9
