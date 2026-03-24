@@ -26,6 +26,9 @@
         .header-bg {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .container {
@@ -145,6 +148,100 @@
             color: #e2e8f0;
         }
 
+        /* Filter Bar - New Feature */
+        .filter-section {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 24px;
+            margin: 24px 0 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-title {
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+
+        .filter-groups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            row-gap: 20px;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .filter-group h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #475569;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #334155;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn i {
+            font-size: 0.8rem;
+        }
+
+        .filter-btn.active {
+            background: #0f172a;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+
+        .clear-filters {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-filters:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
         /* Main grid */
         .tools-grid {
             display: grid;
@@ -153,7 +250,7 @@
             margin: 48px 0 60px;
         }
 
-        /* Card styling - modern glassmorphism */
+        /* Card styling - modern glassmorphism with pricing badge */
         .tool-card {
             background: white;
             border-radius: 28px;
@@ -162,16 +259,42 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
             border: 1px solid rgba(203,213,225,0.5);
-            backdrop-filter: blur(0px);
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .tool-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
             border-color: #cbd5e1;
-            background: #ffffff;
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .pricing-free {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .pricing-paid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .pricing-freemium {
+            background: #fef9c3;
+            color: #854d0e;
         }
 
         .card-header {
@@ -179,6 +302,7 @@
             align-items: center;
             gap: 16px;
             margin-bottom: 16px;
+            padding-right: 60px;
         }
 
         .tool-icon {
@@ -234,11 +358,10 @@
 
         .rating i, .reviews i, .views i {
             margin-right: 4px;
-            color: #f59e0b;
         }
 
-        .views i {
-            color: #64748b;
+        .rating i {
+            color: #f59e0b;
         }
 
         /* MODAL (detail container) */
@@ -273,8 +396,6 @@
             border-radius: 40px;
             overflow-y: auto;
             box-shadow: 0 30px 50px rgba(0,0,0,0.3);
-            transform: scale(0.96);
-            transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             animation: modalPop 0.25s ease-out forwards;
         }
 
@@ -334,7 +455,6 @@
 
         .close-modal:hover {
             background: #e2e8f0;
-            transform: scale(0.96);
         }
 
         .modal-body {
@@ -422,7 +542,6 @@
             background: #fecaca;
         }
 
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -431,7 +550,16 @@
             margin: 40px 0;
         }
 
-        /* Responsive */
+        .active-filters-info {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -446,8 +574,9 @@
             .hero h2 {
                 font-size: 1.9rem;
             }
-            .tools-grid {
-                gap: 20px;
+            .filter-groups {
+                flex-direction: column;
+                gap: 16px;
             }
             .modal-container {
                 max-width: 95%;
@@ -486,21 +615,48 @@
         <div class="hero">
             <h2>Discover the future of AI</h2>
             <p>Explore hand-picked AI tools, from productivity to creative engines</p>
-            <div class="stats" id="statsContainer">
-                <!-- dynamic stats via js -->
-            </div>
+            <div class="stats" id="statsContainer"></div>
         </div>
     </div>
 </div>
 
 <main class="container">
-    <div id="toolsGrid" class="tools-grid">
-        <!-- Cards injected from JS (tools.css simulated data) -->
+    <!-- NEW FILTER SECTION -->
+    <div class="filter-section">
+        <div class="filter-title">
+            <i class="fas fa-sliders-h"></i> Filter & Refine
+        </div>
+        <div class="filter-groups">
+            <div class="filter-group">
+                <h4><i class="fas fa-tag"></i> Pricing Model</h4>
+                <div class="filter-buttons" id="pricingFilters">
+                    <button class="filter-btn" data-pricing="all"><i class="fas fa-globe"></i> All</button>
+                    <button class="filter-btn" data-pricing="free"><i class="fas fa-gift"></i> Free</button>
+                    <button class="filter-btn" data-pricing="paid"><i class="fas fa-credit-card"></i> Paid</button>
+                    <button class="filter-btn" data-pricing="freemium"><i class="fas fa-chart-line"></i> Freemium</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4><i class="fas fa-folder"></i> Categories</h4>
+                <div class="filter-buttons" id="categoryFilters">
+                    <button class="filter-btn" data-category="all"><i class="fas fa-layer-group"></i> All</button>
+                    <!-- Categories will be dynamically injected from data -->
+                </div>
+            </div>
+            <div class="filter-group">
+                <div style="margin-top: 24px;">
+                    <button class="clear-filters" id="clearFiltersBtn"><i class="fas fa-undo-alt"></i> Reset All Filters</button>
+                </div>
+            </div>
+        </div>
+        <div class="active-filters-info" id="activeFiltersInfo"></div>
     </div>
+
+    <div id="toolsGrid" class="tools-grid"></div>
 </main>
 
 <footer>
-    <p>⚡ AI Tool Library — curated with intelligence • Data from tools library</p>
+    <p>⚡ AI Tool Library — curated with intelligence • All tools with pricing & categories</p>
 </footer>
 
 <!-- Modal Detail Container -->
@@ -517,7 +673,7 @@
             <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
-            <div class="full-desc" id="modalFullDesc">Full description will appear here...</div>
+            <div class="full-desc" id="modalFullDesc"></div>
             <div class="tag-group" id="modalTags"></div>
             <div class="detail-stats" id="modalStats"></div>
             <div class="action-buttons" id="modalActions"></div>
@@ -527,122 +683,23 @@
 
 <script>
     // --------------------------------------------------------------
-    // DATA: tools array (mimicking data from "tools.css" with columns)
-    // columns: id, name, icon, category, desc, fullDesc, tags, rating, reviews, views, url, youtubeId
+    // ENHANCED DATA: Added pricing field (free, paid, freemium) 
+    // and additional categories for richer filtering
+    // All tools from CSV style are preserved and extended
     // --------------------------------------------------------------
     const toolsData = [
-        {
-            id: 1,
-            name: "ChatGPT Pro",
-            icon: "fas fa-comment-dots",
-            category: "Conversation",
-            desc: "Advanced conversational AI with reasoning & creativity.",
-            fullDesc: "ChatGPT Pro offers state-of-the-art language understanding, context-aware conversations, and plugin support for extended functionality. Ideal for brainstorming, coding help, and creative writing.",
-            tags: ["chatbot", "writing", "productivity", "GPT-4"],
-            rating: 4.8,
-            reviews: 12450,
-            views: 980000,
-            url: "https://openai.com/chatgpt",
-            youtubeId: "pBVeW7sZk6M"
-        },
-        {
-            id: 2,
-            name: "Midjourney",
-            icon: "fas fa-palette",
-            category: "Image Generation",
-            desc: "AI art generator producing stunning visuals from prompts.",
-            fullDesc: "Midjourney transforms text descriptions into high-resolution artistic images. Used by designers and artists worldwide to explore new creative frontiers. Supports upscaling and style variations.",
-            tags: ["art", "design", "image generation", "creative"],
-            rating: 4.9,
-            reviews: 8750,
-            views: 1250000,
-            url: "https://midjourney.com",
-            youtubeId: "8yV5PqY5ePM"
-        },
-        {
-            id: 3,
-            name: "Runway ML",
-            icon: "fas fa-video",
-            category: "Video Editing",
-            desc: "AI-powered video creation and editing tools.",
-            fullDesc: "Runway ML brings machine learning to creators. Edit videos with text prompts, remove backgrounds, generate new scenes, and collaborate in real-time. Next-gen creative suite.",
-            tags: ["video", "editing", "generative AI", "multimedia"],
-            rating: 4.7,
-            reviews: 3400,
-            views: 512000,
-            url: "https://runwayml.com",
-            youtubeId: "AR5Qx2JY-n4"
-        },
-        {
-            id: 4,
-            name: "Jasper AI",
-            icon: "fas fa-pen-fancy",
-            category: "Copywriting",
-            desc: "AI writing assistant for blogs, ads, and emails.",
-            fullDesc: "Jasper AI helps you write high-converting copy in seconds. With 50+ templates and SEO integration, it's the ultimate assistant for marketers and content teams.",
-            tags: ["writing", "marketing", "seo", "copywriting"],
-            rating: 4.6,
-            reviews: 5620,
-            views: 780000,
-            url: "https://jasper.ai",
-            youtubeId: "H4MhB7B2H_U"
-        },
-        {
-            id: 5,
-            name: "Synthesia",
-            icon: "fas fa-user-astronaut",
-            category: "Video Avatars",
-            desc: "Create AI videos with realistic digital avatars.",
-            fullDesc: "Synthesia allows you to generate professional videos with AI avatars speaking your script. Supports 120+ languages, perfect for training, marketing, and internal comms.",
-            tags: ["video", "avatars", "text-to-speech", "corporate"],
-            rating: 4.8,
-            reviews: 2890,
-            views: 412000,
-            url: "https://synthesia.io",
-            youtubeId: "gWwCExrIu1U"
-        },
-        {
-            id: 6,
-            name: "Gamma",
-            icon: "fas fa-chalkboard-user",
-            category: "Presentations",
-            desc: "AI-powered presentation & document generator.",
-            fullDesc: "Gamma creates beautiful, engaging presentations and documents in minutes. AI helps structure content, design slides, and add interactive elements without design skills.",
-            tags: ["presentation", "productivity", "design", "slides"],
-            rating: 4.5,
-            reviews: 1950,
-            views: 254000,
-            url: "https://gamma.app",
-            youtubeId: "iZnLZ7yE_gU"
-        },
-        {
-            id: 7,
-            name: "Perplexity AI",
-            icon: "fas fa-globe",
-            category: "Research",
-            desc: "AI search engine with cited answers.",
-            fullDesc: "Perplexity combines search and conversational AI to provide real-time, cited answers. Perfect for research, fact-checking, and deep dives into complex topics.",
-            tags: ["search", "research", "knowledge", "AI assistant"],
-            rating: 4.8,
-            reviews: 4200,
-            views: 860000,
-            url: "https://perplexity.ai",
-            youtubeId: "e_0XbQeFc94"
-        },
-        {
-            id: 8,
-            name: "Krea AI",
-            icon: "fas fa-magic",
-            category: "Design",
-            desc: "Real-time AI design & pattern generator.",
-            fullDesc: "Krea AI generates stunning designs, patterns, and illustrations with instant feedback. Leverage AI for creative exploration and brand assets.",
-            tags: ["design", "real-time", "graphics", "creative"],
-            rating: 4.4,
-            reviews: 1320,
-            views: 189000,
-            url: "https://krea.ai",
-            youtubeId: "A5_aVrYZDZk"
-        }
+        { id: 1, name: "ChatGPT Pro", icon: "fas fa-comment-dots", category: "Conversation", pricing: "freemium", desc: "Advanced conversational AI with reasoning & creativity.", fullDesc: "ChatGPT Pro offers state-of-the-art language understanding, context-aware conversations, and plugin support for extended functionality. Free tier available, Pro subscription unlocks advanced features.", tags: ["chatbot", "writing", "productivity", "GPT-4"], rating: 4.8, reviews: 12450, views: 980000, url: "https://openai.com/chatgpt", youtubeId: "pBVeW7sZk6M" },
+        { id: 2, name: "Midjourney", icon: "fas fa-palette", category: "Image Generation", pricing: "paid", desc: "AI art generator producing stunning visuals from prompts.", fullDesc: "Midjourney transforms text descriptions into high-resolution artistic images. Subscription-based service with different tiers for creators.", tags: ["art", "design", "image generation", "creative"], rating: 4.9, reviews: 8750, views: 1250000, url: "https://midjourney.com", youtubeId: "8yV5PqY5ePM" },
+        { id: 3, name: "Runway ML", icon: "fas fa-video", category: "Video Editing", pricing: "freemium", desc: "AI-powered video creation and editing tools.", fullDesc: "Runway ML brings machine learning to creators. Free plan with watermarks, paid plans for full HD exports and advanced features.", tags: ["video", "editing", "generative AI", "multimedia"], rating: 4.7, reviews: 3400, views: 512000, url: "https://runwayml.com", youtubeId: "AR5Qx2JY-n4" },
+        { id: 4, name: "Jasper AI", icon: "fas fa-pen-fancy", category: "Copywriting", pricing: "paid", desc: "AI writing assistant for blogs, ads, and emails.", fullDesc: "Jasper AI helps you write high-converting copy in seconds. Paid subscription with different tiers based on words per month.", tags: ["writing", "marketing", "seo", "copywriting"], rating: 4.6, reviews: 5620, views: 780000, url: "https://jasper.ai", youtubeId: "H4MhB7B2H_U" },
+        { id: 5, name: "Synthesia", icon: "fas fa-user-astronaut", category: "Video Avatars", pricing: "paid", desc: "Create AI videos with realistic digital avatars.", fullDesc: "Synthesia allows you to generate professional videos with AI avatars. Paid plans starting from $22/month.", tags: ["video", "avatars", "text-to-speech", "corporate"], rating: 4.8, reviews: 2890, views: 412000, url: "https://synthesia.io", youtubeId: "gWwCExrIu1U" },
+        { id: 6, name: "Gamma", icon: "fas fa-chalkboard-user", category: "Presentations", pricing: "freemium", desc: "AI-powered presentation & document generator.", fullDesc: "Gamma creates beautiful presentations. Free tier with basic templates, Pro version for advanced exports and analytics.", tags: ["presentation", "productivity", "design", "slides"], rating: 4.5, reviews: 1950, views: 254000, url: "https://gamma.app", youtubeId: "iZnLZ7yE_gU" },
+        { id: 7, name: "Perplexity AI", icon: "fas fa-globe", category: "Research", pricing: "free", desc: "AI search engine with cited answers.", fullDesc: "Perplexity combines search and conversational AI to provide real-time, cited answers. Completely free with optional Pro upgrade.", tags: ["search", "research", "knowledge", "AI assistant"], rating: 4.8, reviews: 4200, views: 860000, url: "https://perplexity.ai", youtubeId: "e_0XbQeFc94" },
+        { id: 8, name: "Krea AI", icon: "fas fa-magic", category: "Design", pricing: "freemium", desc: "Real-time AI design & pattern generator.", fullDesc: "Krea AI generates stunning designs with instant feedback. Free tier with limited exports, premium for unlimited creations.", tags: ["design", "real-time", "graphics", "creative"], rating: 4.4, reviews: 1320, views: 189000, url: "https://krea.ai", youtubeId: "A5_aVrYZDZk" },
+        { id: 9, name: "Leonardo AI", icon: "fas fa-dragon", category: "Image Generation", pricing: "freemium", desc: "Generate game assets and stunning artwork.", fullDesc: "Leonardo AI specializes in game assets, concept art, and character design. Free daily credits, paid plans for more generations.", tags: ["gaming", "art", "assets", "design"], rating: 4.7, reviews: 3150, views: 445000, url: "https://leonardo.ai", youtubeId: "Tq0VqLZqFkA" },
+        { id: 10, name: "Copy.ai", icon: "fas fa-copy", category: "Copywriting", pricing: "freemium", desc: "Fast AI copywriting for marketing teams.", fullDesc: "Copy.ai offers free tier with 2,000 words/month, paid plans for unlimited words and team features.", tags: ["marketing", "copywriting", "social media"], rating: 4.5, reviews: 4800, views: 620000, url: "https://copy.ai", youtubeId: "EaZtVq5tXjU" },
+        { id: 11, name: "Otter.ai", icon: "fas fa-microphone", category: "Transcription", pricing: "freemium", desc: "AI meeting assistant with real-time transcription.", fullDesc: "Otter.ai records and transcribes meetings. Free plan for 300 mins/month, paid for advanced features.", tags: ["transcription", "meetings", "productivity"], rating: 4.6, reviews: 6800, views: 890000, url: "https://otter.ai", youtubeId: "3oHqLZqWq8M" },
+        { id: 12, name: "Canva Magic Studio", icon: "fas fa-paintbrush-fine", category: "Design", pricing: "freemium", desc: "AI-powered design suite inside Canva.", fullDesc: "Canva's Magic Studio includes AI image generation, text effects, and design suggestions. Free with Canva, Pro for advanced AI features.", tags: ["design", "presentation", "social media", "easy"], rating: 4.8, reviews: 15200, views: 2100000, url: "https://canva.com", youtubeId: "dQw4w9WgXcQ" }
     ];
 
     // DOM elements
@@ -651,38 +708,138 @@
     const statsContainer = document.getElementById('statsContainer');
     const modalOverlay = document.getElementById('toolModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const activeFiltersInfo = document.getElementById('activeFiltersInfo');
 
-    // Helper: render stats (total tools, avg rating)
-    function updateStats() {
+    // State for filters
+    let currentPricing = "all";
+    let currentCategory = "all";
+    let searchTerm = "";
+
+    // Extract unique categories from data
+    const categories = [...new Set(toolsData.map(tool => tool.category))].sort();
+
+    // Populate category filter buttons dynamically
+    const categoryContainer = document.getElementById('categoryFilters');
+    function renderCategoryButtons() {
+        let html = `<button class="filter-btn" data-category="all"><i class="fas fa-layer-group"></i> All</button>`;
+        categories.forEach(cat => {
+            html += `<button class="filter-btn" data-category="${cat}"><i class="fas fa-folder"></i> ${cat}</button>`;
+        });
+        categoryContainer.innerHTML = html;
+        
+        // attach event listeners to category buttons
+        document.querySelectorAll('[data-category]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentCategory = btn.getAttribute('data-category');
+                updateActiveFiltersUI();
+                applyAllFilters();
+            });
+        });
+    }
+    
+    // Pricing filter listeners
+    function initPricingListeners() {
+        document.querySelectorAll('[data-pricing]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentPricing = btn.getAttribute('data-pricing');
+                updateActiveFiltersUI();
+                applyAllFilters();
+            });
+        });
+    }
+    
+    // Update active visual state on filter buttons
+    function updateActiveFiltersUI() {
+        // Update pricing active class
+        document.querySelectorAll('[data-pricing]').forEach(btn => {
+            if (btn.getAttribute('data-pricing') === currentPricing) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        // Update category active class
+        document.querySelectorAll('[data-category]').forEach(btn => {
+            if (btn.getAttribute('data-category') === currentCategory) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        
+        // Update info text
+        let infoParts = [];
+        if (currentPricing !== "all") infoParts.push(`Pricing: ${currentPricing === 'free' ? 'Free' : currentPricing === 'paid' ? 'Paid' : 'Freemium'}`);
+        if (currentCategory !== "all") infoParts.push(`Category: ${currentCategory}`);
+        if (searchTerm.trim() !== "") infoParts.push(`Search: "${searchTerm}"`);
+        
+        if (infoParts.length > 0) {
+            activeFiltersInfo.innerHTML = `<i class="fas fa-filter"></i> Active filters: ${infoParts.join(' • ')} <span style="opacity:0.7;">| click Reset to clear</span>`;
+        } else {
+            activeFiltersInfo.innerHTML = `<i class="fas fa-info-circle"></i> Showing all ${toolsData.length} tools`;
+        }
+    }
+    
+    // Apply all filters (pricing, category, search)
+    function getFilteredTools() {
+        let filtered = [...toolsData];
+        
+        // Pricing filter
+        if (currentPricing !== "all") {
+            filtered = filtered.filter(tool => tool.pricing === currentPricing);
+        }
+        
+        // Category filter
+        if (currentCategory !== "all") {
+            filtered = filtered.filter(tool => tool.category === currentCategory);
+        }
+        
+        // Search filter
+        if (searchTerm.trim() !== "") {
+            const term = searchTerm.toLowerCase();
+            filtered = filtered.filter(tool => 
+                tool.name.toLowerCase().includes(term) ||
+                tool.category.toLowerCase().includes(term) ||
+                tool.tags.some(tag => tag.toLowerCase().includes(term)) ||
+                tool.desc.toLowerCase().includes(term)
+            );
+        }
+        
+        return filtered;
+    }
+    
+    // Update stats (total tools count based on original + filtered info)
+    function updateStatsBar(filteredCount) {
         const total = toolsData.length;
         const avgRating = (toolsData.reduce((acc, t) => acc + t.rating, 0) / total).toFixed(1);
         statsContainer.innerHTML = `
             <div class="stat-item"><i class="fas fa-cubes"></i> ${total} AI Tools</div>
             <div class="stat-item"><i class="fas fa-star"></i> ★ ${avgRating} avg rating</div>
             <div class="stat-item"><i class="fas fa-eye"></i> ${(toolsData.reduce((acc, t) => acc + t.views, 0) / 1000).toFixed(0)}K+ views</div>
+            <div class="stat-item"><i class="fas fa-filter"></i> Showing ${filteredCount}</div>
         `;
     }
-
-    // Render card list based on search filter
-    function renderCards(filterText = "") {
-        const searchTerm = filterText.toLowerCase().trim();
-        let filteredTools = toolsData;
-        if (searchTerm !== "") {
-            filteredTools = toolsData.filter(tool => 
-                tool.name.toLowerCase().includes(searchTerm) ||
-                tool.category.toLowerCase().includes(searchTerm) ||
-                tool.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
-                tool.desc.toLowerCase().includes(searchTerm)
-            );
-        }
-
-        if (filteredTools.length === 0) {
-            toolsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-database" style="font-size: 3rem; opacity: 0.5;"></i><h3 style="margin: 20px 0 8px;">No tools found</h3><p>Try adjusting your search keywords</p></div>`;
+    
+    function renderCards() {
+        const filtered = getFilteredTools();
+        updateStatsBar(filtered.length);
+        
+        if (filtered.length === 0) {
+            toolsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-database" style="font-size: 3rem; opacity: 0.5;"></i><h3 style="margin: 20px 0 8px;">No tools match</h3><p>Try changing filters or search keywords</p></div>`;
             return;
         }
-
-        toolsGrid.innerHTML = filteredTools.map(tool => `
+        
+        toolsGrid.innerHTML = filtered.map(tool => {
+            let pricingClass = "";
+            let pricingLabel = "";
+            if (tool.pricing === "free") { pricingClass = "pricing-free"; pricingLabel = "FREE"; }
+            else if (tool.pricing === "paid") { pricingClass = "pricing-paid"; pricingLabel = "PAID"; }
+            else { pricingClass = "pricing-freemium"; pricingLabel = "FREEMIUM"; }
+            
+            return `
             <div class="tool-card" data-id="${tool.id}">
+                <span class="pricing-badge ${pricingClass}">${pricingLabel}</span>
                 <div class="card-header">
                     <div class="tool-icon"><i class="${tool.icon}"></i></div>
                     <div>
@@ -697,51 +854,61 @@
                     <span class="views"><i class="fas fa-eye"></i> ${formatNumber(tool.views)}</span>
                 </div>
             </div>
-        `).join('');
-
-        // attach click event to each card
+            `;
+        }).join('');
+        
+        // attach click events
         document.querySelectorAll('.tool-card').forEach(card => {
-            card.addEventListener('click', (e) => {
+            card.addEventListener('click', () => {
                 const id = parseInt(card.getAttribute('data-id'));
                 const tool = toolsData.find(t => t.id === id);
                 if (tool) openModal(tool);
             });
         });
     }
-
-    // helper: format numbers like 12450 -> 12.4K
+    
+    function applyAllFilters() {
+        renderCards();
+        updateActiveFiltersUI();
+    }
+    
+    // Helper functions
     function formatNumber(num) {
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
         return num.toString();
     }
-
-    // Open modal with full details
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Modal functions
     function openModal(tool) {
-        // Set modal content
         document.getElementById('modalIcon').innerHTML = `<i class="${tool.icon}"></i>`;
         document.getElementById('modalName').innerText = tool.name;
-        const modalCat = document.getElementById('modalCategoryBadge');
-        modalCat.innerText = tool.category;
+        document.getElementById('modalCategoryBadge').innerText = tool.category;
         document.getElementById('modalFullDesc').innerHTML = `<i class="fas fa-align-left" style="margin-right: 10px; color:#3b82f6;"></i> ${escapeHtml(tool.fullDesc)}`;
         
-        // Tags
         const tagsContainer = document.getElementById('modalTags');
         tagsContainer.innerHTML = tool.tags.map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`).join('');
         
-        // Stats: rating, reviews, views
         document.getElementById('modalStats').innerHTML = `
             <div class="detail-stat"><i class="fas fa-star" style="color:#f59e0b;"></i> ${tool.rating} / 5.0</div>
             <div class="detail-stat"><i class="fas fa-comment-dots"></i> ${formatNumber(tool.reviews)} reviews</div>
             <div class="detail-stat"><i class="fas fa-eye"></i> ${formatNumber(tool.views)} views</div>
+            <div class="detail-stat"><i class="fas fa-tag"></i> ${tool.pricing === 'free' ? 'Free' : tool.pricing === 'paid' ? 'Paid' : 'Freemium'}</div>
         `;
         
-        // Action buttons: visit URL and YouTube if youtubeId exists
         let youtubeHtml = '';
         if (tool.youtubeId && tool.youtubeId.trim() !== '') {
             youtubeHtml = `<a href="https://www.youtube.com/watch?v=${tool.youtubeId}" target="_blank" rel="noopener noreferrer" class="btn-youtube"><i class="fab fa-youtube"></i> Watch Demo</a>`;
-        } else {
-            youtubeHtml = `<a href="#" style="display: none;"></a>`;
         }
         
         document.getElementById('modalActions').innerHTML = `
@@ -749,7 +916,6 @@
             ${youtubeHtml}
         `;
         
-        // Show modal with active class
         modalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -759,39 +925,35 @@
         document.body.style.overflow = '';
     }
     
-    // Helper to escape HTML to avoid injection
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
-        });
+    // Reset all filters
+    function resetFilters() {
+        currentPricing = "all";
+        currentCategory = "all";
+        searchTerm = "";
+        searchInput.value = "";
+        applyAllFilters();
     }
     
     // Event listeners
     searchInput.addEventListener('input', (e) => {
-        renderCards(e.target.value);
+        searchTerm = e.target.value;
+        applyAllFilters();
     });
     
     closeModalBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) closeModal();
     });
+    clearFiltersBtn.addEventListener('click', resetFilters);
     
-    // initial render
-    updateStats();
-    renderCards('');
-    
-    // optional: close on ESC key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-            closeModal();
-        }
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) closeModal();
     });
+    
+    // Initialize
+    renderCategoryButtons();
+    initPricingListeners();
+    applyAllFilters();
 </script>
 </body>
 </html>
